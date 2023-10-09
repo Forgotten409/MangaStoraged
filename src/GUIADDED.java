@@ -32,17 +32,20 @@ public class GUIADDED{
         frame2.setSize(500, 500);
 
 
-
-        JPanel rootpanel2 = new JPanel();
-
-        frame2.add(rootpanel2);
-        rootpanel2.setBackground(Color.darkGray);
         JPanel panel2 = new JPanel();
+
+
         frame2.add(panel2);
-        panel2.setBackground(Color.darkGray);
+        frame2.getContentPane().add(BorderLayout.SOUTH, confirmbutton);
+
+
         panel2.add(namemanga);
         panel2.add(getmanganame);
-        frame2.getContentPane().add(BorderLayout.SOUTH, confirmbutton);
+
+
+        panel2.setBackground(Color.darkGray);
+
+
 
         confirmbutton.addActionListener(e -> {
             String textname = getmanganame.getText();

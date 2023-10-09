@@ -29,11 +29,13 @@ public void StartGui() {
 
     panel.add(addbutton);
     panel.add(label);
-    rootpanel.add(panel);
-    frame.add(rootpanel);
 
+    rootpanel.add(panel);
+
+    frame.add(rootpanel);
     frame.getContentPane().add(BorderLayout.SOUTH, panel);
     frame.getContentPane().add(BorderLayout.CENTER, panel2);
+
     panel.setBackground(Color.GRAY);
     rootpanel.setBackground(Color.DARK_GRAY);
     panel2.setBackground(Color.DARK_GRAY);
