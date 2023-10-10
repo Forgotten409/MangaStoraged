@@ -24,7 +24,7 @@ public GUI(){
 public void StartGui() {
     frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 
-    frame.setSize(600, 600);
+    frame.setSize(800, 800);
 
 
     panel.add(addbutton);
@@ -41,12 +41,19 @@ public void StartGui() {
     panel2.setBackground(Color.DARK_GRAY);
 
 
+
     addbutton.addActionListener(e -> guiadded.StartGuiAddedManga());
 
 
 
 
-    JScrollPane scrollPane = new JScrollPane(guiadded.Manganame);
+    JScrollPane scrollPane = new JScrollPane(guiadded.list);
+    scrollPane.setPreferredSize(new Dimension(600,600));
+    scrollPane.getViewport().getView().setBackground(Color.gray);
+    scrollPane.getViewport().getView().setForeground(Color.gray);
+
+
+
     panel2.add(scrollPane);
     frame.setBackground(Color.GRAY);
 
