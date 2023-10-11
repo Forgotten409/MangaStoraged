@@ -1,11 +1,13 @@
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GUIADDED{
+
+    private final String filename = "DataSave.txt";
 
     JFrame frame2 = new JFrame("Magazyn Mang");
 
@@ -15,6 +17,8 @@ public class GUIADDED{
 
 
     JButton confirmbutton = new JButton("Potwierdz");
+
+    List<Manga> mangaList = new ArrayList<>();
 
 
 
@@ -29,7 +33,7 @@ public class GUIADDED{
 
     public void StartGuiAddedManga(){
 
-        List<Manga> mangaList = new ArrayList<>();
+
 
         JLabel namemanga = new JLabel("Name: ");
 
@@ -44,6 +48,9 @@ public class GUIADDED{
         JButton picturebutton = new JButton("Wybierz zdjęcie: ");
 
         JTextField getpicturemanga = new JTextField(20);
+
+        JButton chooseUrlButton = new JButton("Wybierz obrazek z URL");
+
 
         frame2.setDefaultCloseOperation(frame2.DISPOSE_ON_CLOSE);
 
@@ -67,6 +74,7 @@ public class GUIADDED{
         column3.add(picturemanga);
         column3.add(getpicturemanga);
         column3.add(picturebutton);
+        column3.add(chooseUrlButton);
 
         panel2.add(column1);
         panel2.add(column2);
@@ -85,7 +93,7 @@ public class GUIADDED{
 
         confirmbutton.addActionListener(e -> {
             String textname = getmanganame.getText();
-            String textchapter =getchaptermanga.getText();
+            String textchapter = getchaptermanga.getText();
             String picture = getpicturemanga.getText();
             if (textname.isEmpty() || textchapter.isEmpty() || picture.isEmpty()){}else {
                 mangaList.add(new Manga(textname,textchapter,picture));
@@ -96,9 +104,20 @@ public class GUIADDED{
                 for (Manga manga : mangaList) {
                     listModel.addElement(manga);
                 }
-                System.out.println(list);
-                System.out.println(mangaList);
-                mangaList.clear();  }
+
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename ,true))) {
+                    for (Manga manga : mangaList) {
+                        // Format danych w pliku tekstowym - możesz dostosować go do swoich potrzeb
+                        String line = manga.getName() + "," + manga.getChapter() + "," + manga.getImagefilepath();
+                        writer.write(line);
+                        writer.newLine(); // Dodanie nowej linii między rekordami
+                    }
+                    System.out.println("Dane zostały zapisane do pliku " + filename);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                mangaList.clear();
+                }
 
 
 
@@ -122,14 +141,53 @@ public class GUIADDED{
         });
 
 
+        chooseUrlButton.addActionListener(e -> {
+            String url = JOptionPane.showInputDialog("Podaj URL obrazka:");
+            if (url != null && !url.isEmpty()) {
+                getpicturemanga.setText(url);
+            }});
+
 
         frame2.setVisible(true);
     }
+public void readData(){
+    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            // Tutaj musisz podzielić linię na części, używając odpowiedniego separatora (np. przecinka)
+            String[] parts = line.split(",");
+            if (parts.length == 3) {
+                String name = parts[0];
+                String chapter = (parts[1]);
+                String imagefilepath = parts[2];
 
+                // Teraz masz dane wczytane z pliku, możesz zrobić co chcesz z tymi danymi
+                // Na przykład, możesz utworzyć obiekt Manga i dodać go do listy.
+                mangaList.add(new Manga(name, chapter, imagefilepath));
 
+                list.setCellRenderer(new CostumListCellRender());
 
+                for (Manga manga : mangaList) {
+                    listModel.addElement(manga);
+                }
 
-
+            }
+        }
+        System.out.println("Dane zostały wczytane z pliku " + filename);
+    } catch (IOException ex) {
+        ex.printStackTrace();
     }
+
+}
+    }
+
+
+
+
+
+
+
+
+
 
 

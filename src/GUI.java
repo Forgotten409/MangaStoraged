@@ -14,7 +14,6 @@ public class GUI{
     JPanel rootpanel = new JPanel();
 
 
-
 public GUI(){
 
 
@@ -57,8 +56,7 @@ public void StartGui() {
     panel2.add(scrollPane);
     frame.setBackground(Color.GRAY);
 
-
-
+    guiadded.readData();
 
 
     frame.setVisible(true);
