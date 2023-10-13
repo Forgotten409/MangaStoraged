@@ -117,6 +117,7 @@ public class GUIADDED{
                     ex.printStackTrace();
                 }
                 mangaList.clear();
+
                 }
 
 
@@ -170,7 +171,7 @@ public void readData(){
                 for (Manga manga : mangaList) {
                     listModel.addElement(manga);
                 }
-
+            mangaList.clear();
             }
         }
         System.out.println("Dane zostały wczytane z pliku " + filename);

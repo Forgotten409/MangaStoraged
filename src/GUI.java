@@ -44,8 +44,7 @@ public void StartGui() {
     addbutton.addActionListener(e -> guiadded.StartGuiAddedManga());
 
 
-
-
+    guiadded.readData();
     JScrollPane scrollPane = new JScrollPane(guiadded.list);
     scrollPane.setPreferredSize(new Dimension(600,600));
     scrollPane.getViewport().getView().setBackground(Color.gray);
@@ -56,7 +55,7 @@ public void StartGui() {
     panel2.add(scrollPane);
     frame.setBackground(Color.GRAY);
 
-    guiadded.readData();
+
 
 
     frame.setVisible(true);
