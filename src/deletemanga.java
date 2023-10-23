@@ -72,6 +72,10 @@ public class deletemanga {
            }
 
            System.out.println("Manga " + textname + " została usunięta z pliku " + guiadded.filename);
+           if (!textname.isEmpty()) {
+               mangaName.setText(""); // CLEAR
+
+           }
 
 
 

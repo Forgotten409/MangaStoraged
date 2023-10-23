@@ -7,6 +7,7 @@ import java.util.List;
 
 public class GUIADDED{
 
+
     public String filename = "DataSave.txt";
 
     JFrame frame2 = new JFrame("Magazyn Mang");
@@ -118,6 +119,7 @@ public class GUIADDED{
                 }
                 mangaList.clear();
 
+
                 }
 
 
@@ -171,7 +173,7 @@ public void readData(){
                 for (Manga manga : mangaList) {
                     listModel.addElement(manga);
                 }
-            mangaList.clear();
+                mangaList.clear();
             }
         }
         System.out.println("Dane zostały wczytane z pliku " + filename);
