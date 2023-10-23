@@ -7,6 +7,8 @@ import java.util.Objects;
 
 public class deletemanga {
 
+    ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/resources/icone_app.png")));
+
     JFrame frame = new JFrame("Usuń Mange");
 
     JButton button = new JButton("Usuń");
@@ -29,6 +31,8 @@ public class deletemanga {
         frame.setSize(600,600);
         frame.setBackground(Color.GRAY);
         frame.setDefaultCloseOperation(frame.DISPOSE_ON_CLOSE);
+
+        frame.setIconImage(icon.getImage());
 
 
         frame.getContentPane().add(BorderLayout.CENTER, panel);

@@ -4,10 +4,11 @@ import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class GUIADDED{
 
-
+    ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/resources/icone_app.png")));
     public String filename = "DataSave.txt";
 
     JFrame frame2 = new JFrame("Magazyn Mang");
@@ -56,6 +57,9 @@ public class GUIADDED{
         frame2.setDefaultCloseOperation(frame2.DISPOSE_ON_CLOSE);
 
         frame2.setSize(500, 500);
+
+        frame2.setIconImage(icon.getImage());
+
 
 
         JPanel panel2 = new JPanel(new GridLayout(3,3,0,10));

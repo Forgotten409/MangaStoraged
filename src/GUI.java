@@ -1,7 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 public class GUI{
+
+    ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/resources/icone_app.png")));
     JFrame frame = new JFrame("Magazyn Mang");
     JButton addbutton = new JButton("Dodaj");
 
@@ -19,6 +22,8 @@ public class GUI{
 
 
 
+
+
 public GUI(){
 
 
@@ -29,6 +34,8 @@ public void StartGui() {
     frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 
     frame.setSize(800, 800);
+
+    frame.setIconImage(icon.getImage());
 
 
     panel.add(addbutton);
