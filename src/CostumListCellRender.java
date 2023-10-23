@@ -3,11 +3,16 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CostumListCellRender extends JPanel implements ListCellRenderer<Manga> {
     private final JLabel nameLabel = new JLabel();
     private final JLabel chaptersLabel = new JLabel();
     private final JLabel imageLabel = new JLabel();
+
+    private Map<String, ImageIcon> iconCache = new HashMap<>();
+
 
     public CostumListCellRender() {
         setLayout(new BorderLayout());
@@ -30,19 +35,24 @@ public class CostumListCellRender extends JPanel implements ListCellRenderer<Man
 
         ImageIcon icon = null;
 
-        // Sprawdzamy, czy obrazek jest z pliku czy URL
-        if (manga.getImagefilepath().startsWith("http://") || manga.getImagefilepath().startsWith("https://")) {
-            // Wczytujemy obrazek z URL
-            try {
-                URL imageUrl = new URL(manga.getImagefilepath());
-                icon = new ImageIcon(imageUrl);
-            } catch (IOException e) {
-                // Obsługa błędów, na przykład, gdy obrazek nie może być wczytany z URL
-                e.printStackTrace();
-            }
+        if (iconCache.containsKey(manga.getImagefilepath())) {
+            // Jeśli ikona jest już w pamięci podręcznej, użyj jej
+            icon = iconCache.get(manga.getImagefilepath());
         } else {
-            // Wczytujemy obrazek z pliku
-            icon = new ImageIcon(manga.getImagefilepath());
+            // Wczytujemy obrazek z pliku lub URLćź
+            if (manga.getImagefilepath().startsWith("http://") || manga.getImagefilepath().startsWith("https://")) {
+                try {
+                    URL imageUrl = new URL(manga.getImagefilepath());
+                    icon = new ImageIcon(imageUrl);
+                    iconCache.put(manga.getImagefilepath(), icon);
+                } catch (IOException e) {
+                    // Obsługa błędów, np. obrazek nie może być wczytany z URL
+                    e.printStackTrace();
+                }
+            } else {
+                icon = new ImageIcon(manga.getImagefilepath());
+                iconCache.put(manga.getImagefilepath(), icon);
+            }
         }
 
         // Jeśli udało się wczytać obrazek, to go skalujemy

@@ -13,6 +13,11 @@ public class GUI{
 
     JPanel rootpanel = new JPanel();
 
+    JButton deletebutton = new JButton("Usuń");
+
+    deletemanga deletemanga = new deletemanga();
+
+
 
 public GUI(){
 
@@ -28,6 +33,7 @@ public void StartGui() {
 
     panel.add(addbutton);
     panel.add(label);
+    panel.add(deletebutton);
 
     rootpanel.add(panel);
 
@@ -45,6 +51,22 @@ public void StartGui() {
 
 
     guiadded.readData();
+    loadscrollpanel();
+
+
+    frame.setBackground(Color.GRAY);
+
+    deletebutton.addActionListener(e -> {
+        deletemanga.Satrtdeleteprogram();
+
+    });
+
+
+
+
+
+}
+public void loadscrollpanel(){
     JScrollPane scrollPane = new JScrollPane(guiadded.list);
     scrollPane.setPreferredSize(new Dimension(600,600));
     scrollPane.getViewport().getView().setBackground(Color.gray);
@@ -53,13 +75,10 @@ public void StartGui() {
 
 
     panel2.add(scrollPane);
-    frame.setBackground(Color.GRAY);
-
-
-
-
     frame.setVisible(true);
-}}
+}
+
+}
 
 
 

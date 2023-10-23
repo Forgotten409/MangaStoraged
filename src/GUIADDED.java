@@ -7,7 +7,7 @@ import java.util.List;
 
 public class GUIADDED{
 
-    private final String filename = "DataSave.txt";
+    public String filename = "DataSave.txt";
 
     JFrame frame2 = new JFrame("Magazyn Mang");
 
@@ -121,7 +121,6 @@ public class GUIADDED{
                 }
 
 
-
             if (!textname.isEmpty() || textchapter.isEmpty() || picture.isEmpty()) {
                 getmanganame.setText(""); // CLEAR
                 getchaptermanga.setText(""); // CLEAR
@@ -129,6 +128,7 @@ public class GUIADDED{
                 mangaList.clear();
 
             }
+
         });
 
 
@@ -159,7 +159,7 @@ public void readData(){
             String[] parts = line.split(",");
             if (parts.length == 3) {
                 String name = parts[0];
-                String chapter = (parts[1]);
+                String chapter = parts[1];
                 String imagefilepath = parts[2];
 
                 // Teraz masz dane wczytane z pliku, możesz zrobić co chcesz z tymi danymi
