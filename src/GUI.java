@@ -1,8 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
 public class GUI {
@@ -27,11 +29,23 @@ public class GUI {
 
     JButton addbutton2 = new JButton("Szukaj");
 
-    String textname = "";
+    String textname = "Szukanie Mangi po nazwi";
 
     JLabel label2 = new JLabel(textname);
+    JMenuBar menuBar = new JMenuBar();
+    JMenu settingsMenu = new JMenu("Ustawienia");
+    JMenuItem exportMenuItem = new JMenuItem("Exportuj dane na pulpit!");
+    JMenuItem importMenuItem = new JMenuItem("Importuj dane do aplikacji!");
+    JMenu Infomenu = new JMenu("Info");
 
-    Boolean Test1 = false;
+    JMenuItem MEandInfo = new JMenuItem("Stworzony przez: Forgotten409" + " " +
+            "Wersja: 1.0 ");
+
+
+
+
+
+
 
 
 
@@ -51,6 +65,8 @@ public class GUI {
         frame.setIconImage(icon.getImage());
 
 
+
+
         panel.add(addbutton);
         panel.add(label);
         panel.add(deletebutton);
@@ -60,6 +76,24 @@ public class GUI {
         frame.add(rootpanel);
         frame.getContentPane().add(BorderLayout.SOUTH, panel);
         frame.getContentPane().add(BorderLayout.CENTER, panel2);
+
+
+        frame.setJMenuBar(menuBar);
+        menuBar.add(settingsMenu);
+        settingsMenu.add(exportMenuItem);
+        settingsMenu.add(importMenuItem);
+        exportMenuItem.setForeground(Color.BLACK);
+        settingsMenu.setForeground(Color.BLACK);
+        importMenuItem.setForeground(Color.BLACK);
+        menuBar.add(Infomenu);
+        Infomenu.setForeground(Color.BLACK);
+        Infomenu.add(MEandInfo);
+
+        importMenuItem.setToolTipText("<html><font color='red'>Musisz uruchomić ponownie aplikację po imporcie danych.</font></html>");
+        ToolTipManager.sharedInstance().setInitialDelay(0); // Natychmiastowe wyświetlanie
+
+
+
 
         panel.setBackground(Color.GRAY);
         rootpanel.setBackground(Color.DARK_GRAY);
@@ -92,6 +126,59 @@ public class GUI {
 
         addbutton2.addActionListener(e -> {
             findMangaName();
+        });
+
+        exportMenuItem.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser(); // Tworzenie okna wyboru pliku
+            int result = fileChooser.showSaveDialog(frame);
+
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File destinationFile = fileChooser.getSelectedFile();
+                Path sourcePath = Paths.get("DataSave.txt");
+                Path destinationPath = Paths.get(destinationFile.getAbsolutePath());
+
+                try {
+                    Files.copy(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
+                    JOptionPane.showMessageDialog(frame, "Plik DataSave.txt został skopiowany do " + destinationPath);
+                } catch (IOException ex) {
+                    ex.printStackTrace(System.out);
+                    JOptionPane.showMessageDialog(frame, "Wystąpił błąd podczas kopiowania pliku.");
+                }
+            }
+
+
+        });
+
+        importMenuItem.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            int returnVal = fileChooser.showOpenDialog(frame);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                File dataSaveFile = new File("DataSave.txt");
+
+                // Jeśli plik "DataSave.txt" nie istnieje, to go utwórz
+                if (!dataSaveFile.exists()) {
+                    try {
+                        dataSaveFile.createNewFile();
+                    } catch (IOException ex) {
+                        ex.printStackTrace(System.out);
+                    }
+                }
+
+                try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile));
+                     BufferedWriter writer = new BufferedWriter(new FileWriter(dataSaveFile, true))) {
+
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        // Kopiowanie danych z wybranego pliku do pliku "DataSave.txt"
+                        writer.write(line);
+                        writer.newLine();
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace(System.out);
+                }
+            }
         });
 
 
@@ -135,7 +222,7 @@ public class GUI {
                 guiadded.list.ensureIndexIsVisible(scrollIndex); // Przewiń do indeksu
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.out);
         }
     }}
 

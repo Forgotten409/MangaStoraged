@@ -4,6 +4,9 @@
     <inspection_tool class="MisspelledHeader" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <option name="CUSTOM_HEADERS">
         <header value="Icon" />
+        <header value="License" />
+        <header value="Author" />
+        <header value="Description" />
       </option>
     </inspection_tool>
   </profile>

@@ -24,6 +24,11 @@ public class deletemanga {
 
     File originalFile = new File(guiadded.filename);
 
+    JLabel label2 = new JLabel("!!!Po usunieciu musisz uruchmoc aplikacje ponownie by zminy sie zastosowaly i zapisaly!!!");
+
+
+
+
 
 
     public void Satrtdeleteprogram(){
@@ -40,6 +45,8 @@ public class deletemanga {
         panel.add(label);
         panel.add(mangaName);
         panel.add(button);
+        panel.add(label2);
+        label2.setForeground(Color.red);
 
         button.addActionListener(e -> {
             changeData();
@@ -88,7 +95,7 @@ public class deletemanga {
 
 
        }catch (IOException ex) {
-           ex.printStackTrace();
+           ex.printStackTrace(System.out);
            System.err.println("Błąd podczas usuwania mangi z pliku.");
        }
 

@@ -119,7 +119,7 @@ public class GUIADDED{
                     }
                     System.out.println("Dane zostały zapisane do pliku " + filename);
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    ex.printStackTrace(System.out);
                 }
                 mangaList.clear();
 
@@ -158,7 +158,9 @@ public class GUIADDED{
         frame2.setVisible(true);
     }
 public void readData(){
-    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+
+    File dataSaveFile = new File("DataSave.txt");
+    if (dataSaveFile.exists()){try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
         String line;
         while ((line = reader.readLine()) != null) {
             // Tutaj musisz podzielić linię na części, używając odpowiedniego separatora (np. przecinka)
@@ -182,8 +184,9 @@ public void readData(){
         }
         System.out.println("Dane zostały wczytane z pliku " + filename);
     } catch (IOException ex) {
-        ex.printStackTrace();
-    }
+        ex.printStackTrace(System.out);
+    }}
+
 
 }
     }
