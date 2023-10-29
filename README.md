@@ -1,3 +1,4 @@
 Noob java application with which you can store manga, manhwa, manhua, anime, etc. At work...
 Language PL
-Downlaod: https://www.patreon.com/posts/mangastorage-pl-91877584?utm_medium=clipboard_copy&utm_source=copyLink&utm_campaign=postshare_creator&utm_content=join_link
+
+Downlaod: https://www.patreon.com/MinecraftRandomizerProgram
