@@ -2,4 +2,4 @@ Noob(yes i'am noob) java application with which you can store manga, manhwa, man
 
 Language: PL
 
-Downlaod: patreon.com/NoobJavaPrograms
+Downlaod: https://www.patreon.com/NoobJavaPrograms
