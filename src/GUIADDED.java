@@ -60,6 +60,8 @@ public class GUIADDED{
 
         frame2.setIconImage(icon.getImage());
 
+        frame2.setResizable(false);
+
 
 
         JPanel panel2 = new JPanel(new GridLayout(3,3,0,10));

@@ -26,6 +26,8 @@ public class deletemanga {
 
     JLabel label2 = new JLabel("!!!Po usunieciu musisz uruchmoc aplikacje ponownie by zminy sie zastosowaly i zapisaly!!!");
 
+    JLabel label3 = new JLabel("");
+
 
 
 
@@ -33,7 +35,7 @@ public class deletemanga {
 
     public void Satrtdeleteprogram(){
 
-        frame.setSize(600,600);
+        frame.setSize(600,200);
         frame.setBackground(Color.GRAY);
         frame.setDefaultCloseOperation(frame.DISPOSE_ON_CLOSE);
 
@@ -47,6 +49,9 @@ public class deletemanga {
         panel.add(button);
         panel.add(label2);
         label2.setForeground(Color.red);
+        panel.add(label3);
+
+        frame.setResizable(false);
 
         button.addActionListener(e -> {
             changeData();
@@ -82,7 +87,9 @@ public class deletemanga {
                }
            }
 
-           System.out.println("Manga " + textname + " została usunięta z pliku " + guiadded.filename);
+
+           label3.setText("<html><p1>Manga </p1><font color='green'>" + textname + "</font><p1> została usunięta</p1></html>");
+
            if (!textname.isEmpty()) {
                mangaName.setText(""); // CLEAR
 

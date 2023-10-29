@@ -39,7 +39,15 @@ public class GUI {
     JMenu Infomenu = new JMenu("Info");
 
     JMenuItem MEandInfo = new JMenuItem("Stworzony przez: Forgotten409" + " " +
-            "Wersja: 1.0 ");
+            "Wersja: 1.1 ");
+
+    JMenuItem Changelog = new JMenuItem("Changelog <------ Sprawdz!!");
+
+    JButton Editmanga = new JButton("Edytuj");
+
+    EditManga editManga1 = new EditManga();
+
+    ChangelogWrite changelogWrite = new ChangelogWrite();
 
 
 
@@ -64,12 +72,15 @@ public class GUI {
 
         frame.setIconImage(icon.getImage());
 
+        frame.setResizable(false);
+
 
 
 
         panel.add(addbutton);
         panel.add(label);
         panel.add(deletebutton);
+        panel.add(Editmanga);
 
         rootpanel.add(panel);
 
@@ -88,9 +99,18 @@ public class GUI {
         menuBar.add(Infomenu);
         Infomenu.setForeground(Color.BLACK);
         Infomenu.add(MEandInfo);
+        Infomenu.add(Changelog);
 
         importMenuItem.setToolTipText("<html><font color='red'>Musisz uruchomić ponownie aplikację po imporcie danych.</font></html>");
         ToolTipManager.sharedInstance().setInitialDelay(0); // Natychmiastowe wyświetlanie
+
+
+
+        Changelog.addActionListener(e -> {
+            changelogWrite.Changelogstartprogram();
+
+
+        });
 
 
 
@@ -126,6 +146,11 @@ public class GUI {
 
         addbutton2.addActionListener(e -> {
             findMangaName();
+        });
+
+        Editmanga.addActionListener(e -> {
+            editManga1.EditManga2();
+           editManga1.setVisible(true);
         });
 
         exportMenuItem.addActionListener(e -> {
