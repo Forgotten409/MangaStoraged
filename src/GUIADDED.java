@@ -2,23 +2,36 @@
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
+
 
 public class GUIADDED{
 
-    ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/resources/icone_app.png")));
-    public String filename = "DataSave.txt";
+    LanguageChange languageChange = new LanguageChange();
 
-    JFrame frame2 = new JFrame("Magazyn Mang");
+
+
+
+    ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/resources/icone_app.png")));
+
+    public String userHome = System.getProperty("user.home");
+
+    public String folderfilename = ".OtakuLibraryApp";
+
+    public String appDirectoryPath = userHome + File.separator + folderfilename;
+    public String filename = appDirectoryPath + File.separator + "SaveData.txt";
+
+
+    JFrame frame2 = new JFrame("OtakuLibrary");
 
     DefaultListModel<Manga> listModel = new DefaultListModel<>();
 
     JList<Manga> list = new JList<>(listModel);
 
 
-    JButton confirmbutton = new JButton("Potwierdz");
+    JButton confirmbutton = new JButton(languageChange.messages.getString("button.confirmbutton"));
+
 
     List<Manga> mangaList = new ArrayList<>();
 
@@ -34,24 +47,35 @@ public class GUIADDED{
 
 
     public void StartGuiAddedManga(){
+        languageChange.readDatalanguage();
+        updateButtonLabels();
+        Locale userLocale = new Locale(languageChange.languagechanger);
+        ResourceBundle messages = ResourceBundle.getBundle("messages", userLocale);
 
 
 
-        JLabel namemanga = new JLabel("Name: ");
+
+
+        JLabel namemanga = new JLabel(languageChange.messages.getString("label.namemanga"));
+        namemanga.setText(messages.getString("label.namemanga"));
 
         JTextField getmanganame = new JTextField(20);
 
-        JLabel chaptermanga = new JLabel("Chapter: ");
+        JLabel chaptermanga = new JLabel(languageChange.messages.getString("label.chaptermanga"));
+        chaptermanga.setText(messages.getString("label.chaptermanga"));
 
         JTextField getchaptermanga = new JTextField(20);
 
-        JLabel picturemanga = new JLabel("Zdjęcie: ");
+        JLabel picturemanga = new JLabel(languageChange.messages.getString("label.picturemanga"));
+        picturemanga.setText(messages.getString("label.picturemanga"));
 
-        JButton picturebutton = new JButton("Wybierz zdjęcie: ");
+        JButton picturebutton = new JButton(languageChange.messages.getString("button.picturebutton"));
+        picturebutton.setText(messages.getString("button.picturebutton"));
 
         JTextField getpicturemanga = new JTextField(20);
 
-        JButton chooseUrlButton = new JButton("Wybierz obrazek z URL");
+        JButton chooseUrlButton = new JButton(languageChange.messages.getString("button.chooseUrlButton"));
+        chooseUrlButton.setText(messages.getString("button.chooseUrlButton"));
 
 
         frame2.setDefaultCloseOperation(frame2.DISPOSE_ON_CLOSE);
@@ -61,6 +85,8 @@ public class GUIADDED{
         frame2.setIconImage(icon.getImage());
 
         frame2.setResizable(false);
+
+        frame2.setLocationRelativeTo(null);
 
 
 
@@ -103,6 +129,7 @@ public class GUIADDED{
             String textchapter = getchaptermanga.getText();
             String picture = getpicturemanga.getText();
             if (textname.isEmpty() || textchapter.isEmpty() || picture.isEmpty()){}else {
+
                 mangaList.add(new Manga(textname,textchapter,picture));
 
                 list.setCellRenderer(new CostumListCellRender());
@@ -111,6 +138,20 @@ public class GUIADDED{
                 for (Manga manga : mangaList) {
                     listModel.addElement(manga);
                 }
+
+                try {
+                    File appDirectory = new File(appDirectoryPath);
+                    if (!appDirectory.exists()) {
+                        // Tworzenie folderu, jeśli nie istnieje
+                        if (appDirectory.mkdirs()) {
+                            System.out.println("Folder został utworzony.");
+                        } else {
+                            System.out.println("Nie udało się utworzyć folderu.");
+                        }
+                    }
+
+
+
 
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename ,true))) {
                     for (Manga manga : mangaList) {
@@ -126,7 +167,9 @@ public class GUIADDED{
                 mangaList.clear();
 
 
-                }
+                }catch (SecurityException ex){
+                    System.err.println("Brak uprawnień administratora lub nie można uzyskać dostępu do folderu.");}
+            }
 
 
             if (!textname.isEmpty() || textchapter.isEmpty() || picture.isEmpty()) {
@@ -151,17 +194,26 @@ public class GUIADDED{
 
 
         chooseUrlButton.addActionListener(e -> {
-            String url = JOptionPane.showInputDialog("Podaj URL obrazka:");
-            if (url != null && !url.isEmpty()) {
-                getpicturemanga.setText(url);
-            }});
+            if (languageChange.languagechanger.equals("pl")){
+                String url = JOptionPane.showInputDialog("Podaj URL obrazu:");
+                if (url != null && !url.isEmpty()) {
+                    getpicturemanga.setText(url);
+                }
+            }else if (languageChange.languagechanger.equals("en")){
+                String url = JOptionPane.showInputDialog("Enter the image URL:");
+                if (url != null && !url.isEmpty()) {
+                    getpicturemanga.setText(url);
+                }
+            }
+            });
 
 
         frame2.setVisible(true);
     }
+
 public void readData(){
 
-    File dataSaveFile = new File("DataSave.txt");
+    File dataSaveFile = new File(filename);
     if (dataSaveFile.exists()){try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
         String line;
         while ((line = reader.readLine()) != null) {
@@ -191,6 +243,15 @@ public void readData(){
 
 
 }
+
+    public void updateButtonLabels() {
+        Locale userLocale = new Locale(languageChange.languagechanger);
+        ResourceBundle messages = ResourceBundle.getBundle("messages", userLocale);
+        confirmbutton.setText(messages.getString("button.confirmbutton"));
+
+    }
+
+
     }
 
 

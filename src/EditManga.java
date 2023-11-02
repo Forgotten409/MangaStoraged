@@ -5,9 +5,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 public class EditManga extends JFrame {
+    LanguageChange languageChange = new LanguageChange();
+    RestarAPP restarAPP = new RestarAPP();
+
+    GUIADDED guiadded = new GUIADDED();
 
     ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/resources/icone_app.png")));
     private JTextField searchField;
@@ -16,23 +22,36 @@ public class EditManga extends JFrame {
     private JButton saveButton;
 
     public void EditManga2() {
+
+
+        languageChange.readDatalanguage();
+
+        Locale userLocale = new Locale(languageChange.languagechanger);
+        ResourceBundle messages = ResourceBundle.getBundle("messages", userLocale);
+
+
         searchField = new JTextField(20);
-        JLabel label1 = new JLabel("Szukaj Mangi do edycji");
-        JButton searchButton = new JButton("Szukaj");
+        JLabel editlabel1 = new JLabel(languageChange.messages.getString("label.editlabel1"));
+        editlabel1.setText(messages.getString("label.editlabel1"));
+
+        JButton searchButton = new JButton(languageChange.messages.getString("button.searchButton"));
+        searchButton.setText(messages.getString("button.searchButton"));
 
         chaptersField = new JTextField(10);
-        JLabel label2 = new JLabel("Edytuj ilosc chapterów");
+        JLabel editlabel2 = new JLabel(languageChange.messages.getString("label.editlabel2"));
+        editlabel2.setText(messages.getString("label.editlabel2"));
         chaptersField.setEditable(false); // Pole jest początkowo nieedytowalne
 
-        saveButton = new JButton("Zapisz zmiany");
+        saveButton = new JButton(languageChange.messages.getString("button.saveButton"));
+        saveButton.setText(messages.getString("button.saveButton"));
 
         // Utwórz interfejs użytkownika
         JPanel panel = new JPanel(new FlowLayout());
-        panel.add(label1);
+        panel.add(editlabel1);
         panel.add(searchField);
 
         panel.add(searchButton);
-        panel.add(label2);
+        panel.add(editlabel2);
         panel.add(chaptersField);
         panel.add(saveButton);
         saveButton.setEnabled(false);
@@ -58,15 +77,29 @@ public class EditManga extends JFrame {
             }
         });
 
-        setTitle("Edytor Mangi");
+        setTitle("OtakuLibrary");
         setSize(500, 150);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                int choice = JOptionPane.showConfirmDialog(null, "Program zostanie wylaczony by zapisac dane", "Potwierdzenie zamknięcia", JOptionPane.YES_NO_OPTION);
-                if (choice == JOptionPane.YES_OPTION) {
-                    System.exit(0); // Zamknij program
+                if (languageChange.languagechanger.equals("pl")){
+                        int choice = JOptionPane.showConfirmDialog(null, "Program zostanie zrestartowany aby zapisac dane", "Potwierdzenie zamkniecia", JOptionPane.YES_NO_OPTION);
+                        if (choice == JOptionPane.YES_OPTION) {
+                            restarAPP.StartResrar();
+                            System.exit(0); // Zamknij program
+
+                    }
+
+                }else if (languageChange.languagechanger.equals("en")){
+                    int choice = JOptionPane.showConfirmDialog(null, "The program will be restarted to save the data", "Closing confirmation", JOptionPane.YES_NO_OPTION);
+                    if (choice == JOptionPane.YES_OPTION) {
+
+                        restarAPP.StartResrar();
+
+                        System.exit(0); // Zamknij program
+                    }
+
                 }
             }
         });
@@ -74,10 +107,11 @@ public class EditManga extends JFrame {
         setIconImage(icon.getImage());
         setResizable(false);
 
+
     }
 
     public void searchMangaInFile(String mangaName) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("DataSave.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(guiadded.filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
@@ -101,7 +135,7 @@ public class EditManga extends JFrame {
 
     public void saveChapterCount(String mangaName, String newChapterCount) {
         try {
-            File inputFile = new File("DataSave.txt");
+            File inputFile = new File(guiadded.filename);
 
             File tempFile = getFile(mangaName, newChapterCount, inputFile);
 
@@ -109,7 +143,12 @@ public class EditManga extends JFrame {
             if (inputFile.delete()) {
                 // Zmień nazwę tymczasowego pliku na oryginalną nazwę
                 if (tempFile.renameTo(inputFile)) {
-                    JOptionPane.showMessageDialog(this, "Zapisano zmiany.");
+                    if (languageChange.languagechanger.equals("pl")){
+                        JOptionPane.showMessageDialog(this, "Zapisano zmiany");
+                    }else if (languageChange.languagechanger.equals("en")){
+                        JOptionPane.showMessageDialog(this, "Changes saved");
+                    }
+
                 } else {
                     JOptionPane.showMessageDialog(this, "Błąd podczas zapisu zmian.");
                 }
@@ -149,4 +188,5 @@ public class EditManga extends JFrame {
             }
         });
     }
+
 }

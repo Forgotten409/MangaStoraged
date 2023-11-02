@@ -1,30 +1,37 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
 
 public class deletemanga {
 
+    LanguageChange languageChange = new LanguageChange();
+
+    RestarAPP restarAPP = new RestarAPP();
+
     ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/resources/icone_app.png")));
 
-    JFrame frame = new JFrame("Usuń Mange");
+    JFrame frame = new JFrame("OtakuLibrary");
 
-    JButton button = new JButton("Usuń");
+    JButton button = new JButton(languageChange.messages.getString("button.button"));
 
     JTextField mangaName = new JTextField(20);
 
     JPanel panel = new JPanel();
+    JPanel panel2 = new JPanel();
 
-    JLabel label = new JLabel("Wpisz nazwe mangi do usunięcia(manga zostanie usunieta na zawsze bądz pewny!!");
+    JLabel labeldeletemanga = new JLabel(languageChange.messages.getString("label.labeldeletemanga"));
 
     GUIADDED guiadded = new GUIADDED();
 
 
     File originalFile = new File(guiadded.filename);
 
-    JLabel label2 = new JLabel("!!!Po usunieciu musisz uruchmoc aplikacje ponownie by zminy sie zastosowaly i zapisaly!!!");
+    JLabel label2 = new JLabel(languageChange.messages.getString("label.label2"));
 
     JLabel label3 = new JLabel("");
 
@@ -35,21 +42,33 @@ public class deletemanga {
 
     public void Satrtdeleteprogram(){
 
-        frame.setSize(600,200);
+        languageChange.readDatalanguage();
+        updateButtonLabels();
+
+        frame.setSize(700,200);
         frame.setBackground(Color.GRAY);
         frame.setDefaultCloseOperation(frame.DISPOSE_ON_CLOSE);
+
+
+        frame.setLocationRelativeTo(null);
 
         frame.setIconImage(icon.getImage());
 
 
         frame.getContentPane().add(BorderLayout.CENTER, panel);
+
+
         panel.setBackground(Color.darkGray);
-        panel.add(label);
+        panel.add(labeldeletemanga);
         panel.add(mangaName);
         panel.add(button);
         panel.add(label2);
+        frame.getContentPane().add(BorderLayout.SOUTH, panel2);
+        panel2.setBackground(Color.darkGray);
+        panel2.add(label3);
+
         label2.setForeground(Color.red);
-        panel.add(label3);
+
 
         frame.setResizable(false);
 
@@ -88,7 +107,17 @@ public class deletemanga {
            }
 
 
-           label3.setText("<html><p1>Manga </p1><font color='green'>" + textname + "</font><p1> została usunięta</p1></html>");
+
+           if (languageChange.languagechanger.equals("pl")){
+               label3.setText("<html><font color='green'>" + textname + "</font><p1> zostalo usuniete!!</p1></html>");
+               restarAPP.StartResrar();
+               System.exit(0);
+           }else if (languageChange.languagechanger.equals("en")){
+               label3.setText("<html><font color='green'>" + textname + "</font><p1> has been deleted!!</p1></html>");
+               restarAPP.StartResrar();
+               System.exit(0);
+
+           }
 
            if (!textname.isEmpty()) {
                mangaName.setText(""); // CLEAR
@@ -108,6 +137,13 @@ public class deletemanga {
 
 
     }
+    public void updateButtonLabels() {
+        Locale userLocale = new Locale(languageChange.languagechanger);
+        ResourceBundle messages = ResourceBundle.getBundle("messages", userLocale);
+        button.setText(messages.getString("button.button"));
+        labeldeletemanga.setText(messages.getString("label.labeldeletemanga"));
+        label2.setText(messages.getString("label.label2"));
 
+    }
 
 }

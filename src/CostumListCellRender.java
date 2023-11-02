@@ -1,20 +1,29 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class CostumListCellRender extends JPanel implements ListCellRenderer<Manga> {
+
+    LanguageChange languageChange = new LanguageChange();
+
     private final JLabel nameLabel = new JLabel();
     private final JLabel chaptersLabel = new JLabel();
     private final JLabel imageLabel = new JLabel();
 
-    private Map<String, ImageIcon> iconCache = new HashMap<>();
+    private final Map<String, ImageIcon> iconCache = new HashMap<>();
 
 
     public CostumListCellRender() {
+
+        languageChange.readDatalanguage();
         setLayout(new BorderLayout());
         add(nameLabel, BorderLayout.CENTER);
         add(chaptersLabel, BorderLayout.EAST);
@@ -30,28 +39,46 @@ public class CostumListCellRender extends JPanel implements ListCellRenderer<Man
     @Override
     public Component getListCellRendererComponent(JList<? extends Manga> list, Manga manga, int index,
                                                   boolean isSelected, boolean cellHasFocus) {
-        nameLabel.setText(" Tytuł: " + manga.getName());
-        chaptersLabel.setText("Przeczytane do: " + manga.getChapter());
 
-        ImageIcon icon = null;
+
+        if (languageChange.languagechanger.equals("pl")){
+            nameLabel.setText(" Tytul: " + manga.getName());
+            chaptersLabel.setText("Przeczytany Rozdzial: " + manga.getChapter());
+        }else if (languageChange.languagechanger.equals("en")){
+            nameLabel.setText(" Title: " + manga.getName());
+            chaptersLabel.setText("Read Chapter: " + manga.getChapter());
+
+        }
+
+
+        ImageIcon icon;
 
         if (iconCache.containsKey(manga.getImagefilepath())) {
             // Jeśli ikona jest już w pamięci podręcznej, użyj jej
             icon = iconCache.get(manga.getImagefilepath());
         } else {
-            // Wczytujemy obrazek z pliku lub URLćź
+            // Wczytujemy obrazek z pliku lub URL
             if (manga.getImagefilepath().startsWith("http://") || manga.getImagefilepath().startsWith("https://")) {
                 try {
+
                     URL imageUrl = new URL(manga.getImagefilepath());
-                    icon = new ImageIcon(imageUrl);
+                    BufferedImage image = ImageIO.read(imageUrl);
+
+
+                    icon = new ImageIcon(image);
                     iconCache.put(manga.getImagefilepath(), icon);
                 } catch (IOException e) {
                     // Obsługa błędów, np. obrazek nie może być wczytany z URL
-                    e.printStackTrace();
+                    icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/resources/empty_image.jpg")));
                 }
-            } else {
-                icon = new ImageIcon(manga.getImagefilepath());
-                iconCache.put(manga.getImagefilepath(), icon);
+            } else {  try{
+                File imageFile = new File(manga.getImagefilepath());
+
+                BufferedImage image = ImageIO.read(imageFile);
+
+                icon = new ImageIcon(image);
+
+                iconCache.put(manga.getImagefilepath(), icon);}catch (IOException e){icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/resources/empty_image.jpg")));}
             }
         }
 
